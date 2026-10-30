@@ -21,8 +21,6 @@ const ReactPaginate = (
   >
 ).default;
 
-const notify = () => toast("No movies found for your request.");
-
 export default function App() {
   const [text, setText] = useState("");
   const [selectedMovie, setSelectedMovie] = useState<Movie | null>(null);
