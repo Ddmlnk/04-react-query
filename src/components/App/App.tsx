@@ -28,7 +28,7 @@ export default function App() {
   const [selectedMovie, setSelectedMovie] = useState<Movie | null>(null);
   const [pageNumber, setPageNumber] = useState(1);
 
-  const { data, isLoading, isError } = useQuery({
+  const { data, isLoading, isError, isSuccess } = useQuery({
     queryKey: ["movies", text, pageNumber],
     queryFn: () => fetchMovies(text, pageNumber),
     enabled: text !== "",
@@ -38,7 +38,15 @@ export default function App() {
   const totalPages = data?.total_pages ?? 0;
 
   useEffect(() => {
-    if (isError) notify();
+    if (isSuccess && data.results.length === 0) {
+      toast("No movies found for your request.");
+    }
+  }, [isSuccess, data]);
+
+  useEffect(() => {
+    if (isError) {
+      toast.error("Щось пішло не так. Спробуй ще раз.");
+    }
   }, [isError]);
 
   function handleSelect(movie: Movie) {
